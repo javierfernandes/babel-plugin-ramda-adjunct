@@ -59,7 +59,7 @@ export default function({ types: t }) {
       },
       ImportDeclaration(path) {
         let { node } = path;
-        if (node.source.value === 'ramda') {
+        if (node.source.value === 'ramda-adjunct') {
           node.specifiers.forEach(spec => {
             if (t.isImportSpecifier(spec)) {
               specified[spec.local.name] = spec.imported.name;
@@ -74,7 +74,7 @@ export default function({ types: t }) {
       ExportNamedDeclaration(path, state) {
         let { node, hub } = path;
         let { useES } = state.opts;
-        if (node.source && node.source.value === 'ramda') {
+        if (node.source && node.source.value === 'ramda-adjunct') {
           let specifiers = node.specifiers.map(spec => {
             let importIdentifier = importMethod(useES, spec.exported.name, hub.file);
             let exportIdentifier = t.identifier(spec.local.name);
@@ -86,8 +86,8 @@ export default function({ types: t }) {
       },
       ExportAllDeclaration(path) {
         let { node } = path;
-        if (node.source && node.source.value === 'ramda') {
-          throw new Error('`export * from "ramda"` defeats the purpose of babel-plugin-ramda');
+        if (node.source && node.source.value === 'ramda-adjunct') {
+          throw new Error('`export * from "ramda"` defeats the purpose of babel-plugin-ramda-adjunct');
         }
       },
       CallExpression(path, state) {
